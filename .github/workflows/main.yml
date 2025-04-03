@@ -11,6 +11,7 @@ jobs:
         outputs:
             update: ${{steps.should_update.outputs.update}}
             latest_commit: ${{steps.should_update.outputs.latest_commit}}
+            latest_tag: ${{steps.should_update.outputs.latest_tag}}
         steps:
 
           - name: Checkout This Repo
@@ -30,6 +31,8 @@ jobs:
                 current_commit="${{steps.current_commit.outputs.content}}"
                 current_commit="${current_commit%"${current_commit##*[![:space:]]}"}"
                 latest_commit=$(curl -s https://api.github.com/repos/v8/v8/tags | jq -r '.[12].commit.sha')
+                latest_tag=$(curl -s https://api.github.com/repos/v8/v8/tags | jq -r '.[12].name')
+                echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
                 echo "Current commit: $current_commit"
                 echo "Latest commit: $latest_commit"
                 echo "latest_commit=$latest_commit" >> $GITHUB_OUTPUT
@@ -69,6 +72,8 @@ jobs:
             contents: write
         env:
             LATEST_COMMIT: ${{needs.check.outputs.latest_commit}}
+        outputs:
+            updated_commit: ${{steps.commit.outputs.commit}}
         steps:
 
           - name: Checkout This Repo
@@ -78,8 +83,8 @@ jobs:
 
           - name: Configure Git
             run: |
-                git config --global user.name "github-actions[bot]"
-                git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                git config --global user.name "${{github.actor}}"
+                git config --global user.email "${{github.actor_id}}+${{github.actor}}@users.noreply.github.com"
 
           - name: Update Commit File
             run: |
@@ -87,7 +92,80 @@ jobs:
                 echo "$LATEST_COMMIT" > ./COMMIT
 
           - name: Commit Changes
+            id: commit
             run: |
                 git add COMMIT
                 git commit -m "Automated: Update COMMIT to $LATEST_COMMIT"
+                commit=$(git rev-parse HEAD)
+                echo "commit=$commit" >> $GITHUB_OUTPUT
                 git push
+
+    release-artifacts:
+        runs-on: ubuntu-latest
+        needs: [check, build-linux, build-macos, build-windows, update-commit]
+        permissions:
+            contents: write
+        steps:
+
+          - name: Download Artifact v8_windows_x64
+            uses: actions/download-artifact@v4
+            with:
+                name: v8_windows_x64
+                path: v8_windows_x64
+                github-token: ${{github.token}}
+                repository: ${{github.repository}}
+                run-id: ${{needs.build-windows.outputs.runid}}
+
+          - name: Download Artifact v8_windows_arm64
+            uses: actions/download-artifact@v4
+            with:
+                name: v8_windows_arm64
+                path: v8_windows_arm64
+                github-token: ${{github.token}}
+                repository: ${{github.repository}}
+                run-id: ${{needs.build-windows.outputs.runid}}
+
+          - name: Download Artifact v8_linux_x64
+            uses: actions/download-artifact@v4
+            with:
+                name: v8_linux_x64
+                path: v8_linux_x64
+                github-token: ${{github.token}}
+                repository: ${{github.repository}}
+                run-id: ${{needs.build-linux.outputs.runid}}
+
+          - name: Download Artifact v8_linux_arm64
+            uses: actions/download-artifact@v4
+            with:
+                name: v8_linux_arm64
+                path: v8_linux_arm64
+                github-token: ${{github.token}}
+                repository: ${{github.repository}}
+                run-id: ${{needs.build-linux.outputs.runid}}
+
+          - name: Download Artifact v8_macos_x64
+            uses: actions/download-artifact@v4
+            with:
+                name: v8_macos_x64
+                path: v8_macos_x64
+                github-token: ${{github.token}}
+                repository: ${{github.repository}}
+                run-id: ${{needs.build-macos.outputs.runid}}
+
+          - name: Download Artifact v8_macos_arm64
+            uses: actions/download-artifact@v4
+            with:
+                name: v8_macos_arm64
+                path: v8_macos_arm64
+                github-token: ${{github.token}}
+                repository: ${{github.repository}}
+                run-id: ${{needs.build-macos.outputs.runid}}
+
+          - name: Release Artifacts
+            uses: ncipollo/release-action@v1.16.0
+            with:
+                artifacts: v8_windows_x64/v8_windows_x64_debug.7z, v8_windows_x64/v8_windows_x64_release.7z, v8_windows_arm64/v8_windows_arm64_debug.7z, v8_windows_arm64/v8_windows_arm64_release.7z, v8_linux_x64/v8_linux_x64_debug.7z, v8_linux_x64/v8_linux_x64_release.7z, v8_linux_arm64/v8_linux_arm64_debug.7z, v8_linux_arm64/v8_linux_arm64_release.7z, v8_macos_x64/v8_macos_x64_debug.7z, v8_macos_x64/v8_macos_x64_release.7z, v8_macos_arm64/v8_macos_arm64_debug.7z, v8_macos_arm64/v8_macos_arm64_release.7z
+                artifactErrorsFailBuild: true
+                commit: ${{needs.update-commit.outputs.updated_commit}}
+                tag: ${{needs.check.outputs.latest_tag}}
+                body: Build for commit ${{needs.check.outputs.latest_commit}}.

@@ -6,6 +6,9 @@ on:
             commit:
                 type: string
                 required: true
+        outputs:
+            runid:
+                value: ${{github.run_id}}
     workflow_dispatch:
         inputs:
             commit:
@@ -16,6 +19,7 @@ jobs:
     build-x64:
         runs-on: windows-latest
         steps:
+
           - name: Checkout This Repo
             uses: actions/checkout@v4
             with:
@@ -66,12 +70,18 @@ jobs:
             run: |
                 $ErrorActionPreference = "Stop"
                 $output1 = .\v8\v8\out\x64.debug\v8_hello_world.exe
-                if($output1 -like "Hello, World!*"){}else{
+                if($output1 -like "Hello, World!*"){
+                    Write-Output "Debug test passed."
+                }
+                else{
                     Write-Error "Test failure: output is $output1"
                     exit 1
                 }
                 $output2 = .\v8\v8\out\x64.release\v8_hello_world.exe
-                if($output2 -like "Hello, World!*"){}else{
+                if($output2 -like "Hello, World!*"){
+                    Write-Output "Release test passed."
+                }
+                else{
                     Write-Error "Test failure: output is $output2"
                     exit 1
                 }
@@ -80,13 +90,13 @@ jobs:
             shell: pwsh
             run: |
                 echo ${{inputs.commit}} >> commit.txt
-                7z a v8_win_x64_debug.7z .\v8\v8\out\x64.debug\obj\v8_monolith.lib .\v8\v8\include commit.txt
-                7z a v8_win_x64_release.7z .\v8\v8\out\x64.release\obj\v8_monolith.lib .\v8\v8\include commit.txt
+                7z a v8_windows_x64_debug.7z .\v8\v8\out\x64.debug\obj\v8_monolith.lib .\v8\v8\include commit.txt
+                7z a v8_windows_x64_release.7z .\v8\v8\out\x64.release\obj\v8_monolith.lib .\v8\v8\include commit.txt
 
           - name: Upload Archive
             uses: actions/upload-artifact@v4
             with:
-                name: v8_windows
+                name: v8_windows_x64
                 path: |
                     *.7z
                 retention-days: 7
@@ -94,6 +104,7 @@ jobs:
     build-arm64:
         runs-on: windows-latest
         steps:
+
           - name: Checkout This Repo
             uses: actions/checkout@v4
             with:
@@ -143,13 +154,13 @@ jobs:
             shell: pwsh
             run: |
                 echo ${{inputs.commit}} >> commit.txt
-                7z a v8_win_arm64_debug.7z .\v8\v8\out\arm64.debug\obj\v8_monolith.lib .\v8\v8\include commit.txt
-                7z a v8_win_arm64_release.7z .\v8\v8\out\arm64.release\obj\v8_monolith.lib .\v8\v8\include commit.txt
+                7z a v8_windows_arm64_debug.7z .\v8\v8\out\arm64.debug\obj\v8_monolith.lib .\v8\v8\include commit.txt
+                7z a v8_windows_arm64_release.7z .\v8\v8\out\arm64.release\obj\v8_monolith.lib .\v8\v8\include commit.txt
 
           - name: Upload Archive
             uses: actions/upload-artifact@v4
             with:
-                name: v8_windows
+                name: v8_windows_arm64
                 path: |
                     *.7z
                 retention-days: 7
