@@ -1,0 +1,19 @@
+﻿name: Build on MacOS
+
+on:
+    workflow_call:
+        inputs:
+            commit:
+                type: string
+                required: true
+    workflow_dispatch:
+        inputs:
+            commit:
+                type: string
+                required: true
+
+jobs:
+    build:
+        runs-on: macos-latest
+        steps:
+          - run: echo 1
