@@ -47,9 +47,8 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                git switch --track origin/${{inputs.tag}}-lkgr
-                git rev-parse HEAD
-                echo 1
+                git fetch origin refs/branch-heads/${{inputs.tag}}-lkgr:refs/remotes/origin/${{inputs.tag}}-lkgr
+                git checkout -b ${{inputs.tag}}-lkgr origin/${{inputs.tag}}-lkgr
                 gclient sync
 
           - name: Build Windows x64 Debug
@@ -135,7 +134,8 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                git switch --track origin/${{inputs.tag}}-lkgr
+                git fetch origin refs/branch-heads/${{inputs.tag}}-lkgr:refs/remotes/origin/${{inputs.tag}}-lkgr
+                git checkout -b ${{inputs.tag}}-lkgr origin/${{inputs.tag}}-lkgr
                 gclient sync
 
           - name: Build Windows arm64 Debug

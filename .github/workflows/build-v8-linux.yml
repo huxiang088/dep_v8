@@ -46,10 +46,8 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                git branch -a
-                git switch --track refs/branch-heads/${{inputs.tag}}-lkgr
-                commit=$(git rev-parse HEAD)
-                echo "$commit"
+                git fetch origin refs/branch-heads/${{inputs.tag}}-lkgr:refs/remotes/origin/${{inputs.tag}}-lkgr
+                git checkout -b ${{inputs.tag}}-lkgr origin/${{inputs.tag}}-lkgr
                 gclient sync
 
           - name: Build V8 Linux x64 Debug
@@ -133,7 +131,8 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                git switch --track origin/${{inputs.tag}}-lkgr
+                git fetch origin refs/branch-heads/${{inputs.tag}}-lkgr:refs/remotes/origin/${{inputs.tag}}-lkgr
+                git checkout -b ${{inputs.tag}}-lkgr origin/${{inputs.tag}}-lkgr
                 gclient sync
 
           - name: Build V8 Linux arm64 Debug
