@@ -49,8 +49,7 @@ jobs:
                 fetch v8
                 gclient sync
                 git switch --track origin/${{inputs.tag}}-lkgr
-                $commitHash = git rev-parse HEAD
-                Write-Output $commitHash
+                git rev-parse HEAD
                 gclient sync
 
           - name: Build Windows x64 Debug
