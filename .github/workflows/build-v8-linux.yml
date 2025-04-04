@@ -32,7 +32,7 @@ jobs:
           - name: Checkout V8 Source Code
             shell: bash
             run: |
-                git config --global --unset credential.helper
+                git config --global credential.helper ""
                 mkdir v8
                 cd v8
                 fetch v8
