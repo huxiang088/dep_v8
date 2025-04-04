@@ -26,6 +26,17 @@ jobs:
                 clean: true
                 fetch-depth: 1
 
+          - name: Set Git Configs
+            shell: bash
+            run: |
+                git config branch.autosetupmerge always
+                git config branch.autosetuprebase always
+                git config --global core.autocrlf false
+                git config --global core.filemode false
+                git config --global core.longpaths true
+                git config --global core.preloadindex true
+                git config --global core.fscache true
+
           - name: Check Depot Tools
             uses: newkdev/setup-depot-tools@v1.0.1
 
@@ -77,6 +88,17 @@ jobs:
             with:
                 clean: true
                 fetch-depth: 1
+
+          - name: Set Git Configs
+            shell: bash
+            run: |
+                git config branch.autosetupmerge always
+                git config branch.autosetuprebase always
+                git config --global core.autocrlf false
+                git config --global core.filemode false
+                git config --global core.longpaths true
+                git config --global core.preloadindex true
+                git config --global core.fscache true
 
           - name: Check Depot Tools
             uses: newkdev/setup-depot-tools@v1.0.1
