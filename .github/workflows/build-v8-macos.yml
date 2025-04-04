@@ -35,6 +35,7 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
+                git checkout ${{inputs.commit}}
                 gclient sync
 
           - name: Build V8 MacOS x64 Debug
@@ -86,6 +87,7 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
+                git checkout ${{inputs.commit}}
                 gclient sync
 
           - name: Build V8 MacOS arm64 Debug
