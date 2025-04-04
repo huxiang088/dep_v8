@@ -49,6 +49,7 @@ jobs:
                 fetch v8
                 git switch --track origin/${{inputs.tag}}-lkgr
                 git rev-parse HEAD
+                echo 1
                 gclient sync
 
           - name: Build Windows x64 Debug

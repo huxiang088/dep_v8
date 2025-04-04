@@ -46,6 +46,7 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
+                git branch -a
                 git switch --track refs/branch-heads/${{inputs.tag}}-lkgr
                 commit=$(git rev-parse HEAD)
                 echo "$commit"
