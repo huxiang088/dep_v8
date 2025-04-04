@@ -3,7 +3,7 @@
 on:
     workflow_call:
         inputs:
-            commit:
+            tag:
                 type: string
                 required: true
         outputs:
@@ -11,7 +11,7 @@ on:
                 value: ${{github.run_id}}
     workflow_dispatch:
         inputs:
-            commit:
+            tag:
                 type: string
                 required: true
 
@@ -37,7 +37,7 @@ jobs:
                 cd v8
                 fetch v8
                 gclient sync
-                git checkout ${{inputs.commit}}
+                git switch --track origin/${{inputs.tag}}-lkgr
                 commit=$(git rev-parse HEAD)
                 echo "$commit"
                 gclient sync
@@ -80,10 +80,10 @@ jobs:
           - name: Compress Product
             shell: bash
             run: |
-                echo "${{inputs.commit}}" >> commit.txt
+                echo "${{inputs.tag}}" >> tag.txt
                 sudo apt-get update && sudo apt-get install -y p7zip-full
-                7z a v8_linux_x64_debug.7z ./v8/v8/out/x64.debug/obj/v8_monolith.a ./v8/v8/include commit.txt
-                7z a v8_linux_x64_release.7z ./v8/v8/out/x64.release/obj/v8_monolith.a ./v8/v8/include commit.txt
+                7z a v8_linux_x64_debug.7z ./v8/v8/out/x64.debug/obj/v8_monolith.a ./v8/v8/include tag.txt
+                7z a v8_linux_x64_release.7z ./v8/v8/out/x64.release/obj/v8_monolith.a ./v8/v8/include tag.txt
         
           - name: Upload Archive
             uses: actions/upload-artifact@v4
@@ -113,8 +113,7 @@ jobs:
                 cd v8
                 fetch v8
                 gclient sync
-                git fetch origin
-                git checkout ${{inputs.commit}}
+                git switch --track origin/${{inputs.tag}}-lkgr
                 gclient sync
 
           - name: Build V8 Linux arm64 Debug
@@ -134,10 +133,10 @@ jobs:
           - name: Compress Product
             shell: bash
             run: |
-                echo "${{inputs.commit}}" >> commit.txt
+                echo "${{inputs.tag}}" >> tag.txt
                 sudo apt-get update && sudo apt-get install -y p7zip-full
-                7z a v8_linux_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/v8_monolith.a ./v8/v8/include commit.txt
-                7z a v8_linux_arm64_release.7z ./v8/v8/out/arm64.release/obj/v8_monolith.a ./v8/v8/include commit.txt
+                7z a v8_linux_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/v8_monolith.a ./v8/v8/include tag.txt
+                7z a v8_linux_arm64_release.7z ./v8/v8/out/arm64.release/obj/v8_monolith.a ./v8/v8/include tag.txt
         
           - name: Upload Archive
             uses: actions/upload-artifact@v4

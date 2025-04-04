@@ -10,7 +10,6 @@ jobs:
         runs-on: ubuntu-latest
         outputs:
             update: ${{steps.should_update.outputs.update}}
-            latest_commit: ${{steps.should_update.outputs.latest_commit}}
             latest_tag: ${{steps.should_update.outputs.latest_tag}}
         steps:
 
@@ -19,25 +18,25 @@ jobs:
             with:
                 ref: main
 
-          - name: Get Last Built Commit
-            id: current_commit
+          - name: Get Last Built Tag
+            id: current_tag
             uses: juliangruber/read-file-action@v1
             with:
-                path: ./COMMIT
+                path: ./TAG
 
           - name: Determine Should Update
             id: should_update
             run: |
-                current_commit="${{steps.current_commit.outputs.content}}"
-                current_commit="${current_commit%"${current_commit##*[![:space:]]}"}"
-                latest_commit=$(curl -s "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Windows&num=1" | jq -r '.[0].hashes.v8')
-                latest_tag=$(curl -s "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Windows&num=1" | jq -r '.[0].version')
+                current_tag="${{steps.current_tag.outputs.content}}"
+                current_tag="${current_tag%"${current_tag##*[![:space:]]}"}"
+
+                latest_tag=$(curl -s "https://chromiumdash.appspot.com/fetch_milestones?channel=Stable&platform=Windows&num=1" | jq -r '.[0].v8_branch')
+
                 echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
-                echo "Current commit: $current_commit"
-                echo "Latest commit: $latest_commit"
+                echo "Built tag: $current_tag"
                 echo "Latest tag: $latest_tag"
-                echo "latest_commit=$latest_commit" >> $GITHUB_OUTPUT
-                if [ "$current_commit" = "$latest_commit" ]; then
+
+                if [ "$current_tag" = "$latest_tag" ]; then
                     echo "update=false" >> $GITHUB_OUTPUT
                     echo "Build skipped."
                 else
@@ -50,29 +49,29 @@ jobs:
         if: needs.check.outputs.update == 'true'
         uses: ./.github/workflows/build-v8-windows.yml
         with:
-            commit: ${{needs.check.outputs.latest_commit}}
+            tag: ${{needs.check.outputs.latest_tag}}
 
     build-linux:
         needs: check
         if: needs.check.outputs.update == 'true'
         uses: ./.github/workflows/build-v8-linux.yml
         with:
-            commit: ${{needs.check.outputs.latest_commit}}
+            tag: ${{needs.check.outputs.latest_tag}}
 
     build-macos:
         needs: check
         if: needs.check.outputs.update == 'true'
         uses: ./.github/workflows/build-v8-macos.yml
         with:
-            commit: ${{needs.check.outputs.latest_commit}}
+            tag: ${{needs.check.outputs.latest_tag}}
 
-    update-commit:
+    update-tag:
         runs-on: ubuntu-latest
         needs: [check, build-linux, build-macos, build-windows]
         permissions:
             contents: write
         env:
-            LATEST_COMMIT: ${{needs.check.outputs.latest_commit}}
+            LATEST_TAG: ${{needs.check.outputs.latest_tag}}
         outputs:
             updated_commit: ${{steps.commit.outputs.commit}}
         steps:
@@ -90,20 +89,22 @@ jobs:
           - name: Update Commit File
             run: |
                 set +o noclobber
-                echo "$LATEST_COMMIT" > ./COMMIT
+                echo "$LATEST_TAG" > ./TAG
 
           - name: Commit Changes
             id: commit
             run: |
                 git add COMMIT
-                git commit -m "Automated: Update COMMIT to $LATEST_COMMIT"
+                git commit -m "Automated: Update TAG to $LATEST_TAG"
+
                 commit=$(git rev-parse HEAD)
                 echo "commit=$commit" >> $GITHUB_OUTPUT
+
                 git push
 
     release-artifacts:
         runs-on: ubuntu-latest
-        needs: [check, build-linux, build-macos, build-windows, update-commit]
+        needs: [check, build-linux, build-macos, build-windows, update-tag]
         permissions:
             contents: write
         steps:
@@ -166,6 +167,6 @@ jobs:
             uses: ncipollo/release-action@v1.16.0
             with:
                 artifacts: v8_windows_x64/v8_windows_x64_debug.7z, v8_windows_x64/v8_windows_x64_release.7z, v8_windows_arm64/v8_windows_arm64_debug.7z, v8_windows_arm64/v8_windows_arm64_release.7z, v8_linux_x64/v8_linux_x64_debug.7z, v8_linux_x64/v8_linux_x64_release.7z, v8_linux_arm64/v8_linux_arm64_debug.7z, v8_linux_arm64/v8_linux_arm64_release.7z, v8_macos_x64/v8_macos_x64_debug.7z, v8_macos_x64/v8_macos_x64_release.7z, v8_macos_arm64/v8_macos_arm64_debug.7z, v8_macos_arm64/v8_macos_arm64_release.7z
-                commit: ${{needs.update-commit.outputs.updated_commit}}
+                commit: ${{needs.update-tag.outputs.updated_commit}}
                 tag: ${{needs.check.outputs.latest_tag}}
-                body: Build for commit ${{needs.check.outputs.latest_commit}}.
+                body: Build for tag ${{needs.check.outputs.latest_tag}}.
