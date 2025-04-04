@@ -37,7 +37,7 @@ jobs:
                 fetch v8
                 gclient sync
                 git fetch origin
-                git checkout stable
+                git checkout -b stable origin/stable
                 git checkout ${{inputs.commit}}
                 gclient sync
 
@@ -92,7 +92,7 @@ jobs:
                 fetch v8
                 gclient sync
                 git fetch origin
-                git checkout stable
+                git checkout -b stable origin/stable
                 git checkout ${{inputs.commit}}
                 gclient sync
 
