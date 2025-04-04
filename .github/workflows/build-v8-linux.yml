@@ -32,12 +32,14 @@ jobs:
           - name: Checkout V8 Source Code
             shell: bash
             run: |
+                git credential-luci login
                 mkdir v8
                 cd v8
                 fetch v8
                 gclient sync
-                git fetch origin stable
                 git checkout ${{inputs.commit}}
+                commit=$(git rev-parse HEAD)
+                echo "$commit"
                 gclient sync
 
           - name: Build V8 Linux x64 Debug

@@ -48,8 +48,9 @@ jobs:
                 cd v8
                 fetch v8
                 gclient sync
-                git fetch origin
                 git checkout ${{inputs.commit}}
+                $commitHash = git rev-parse HEAD
+                Write-Output $commitHash
                 gclient sync
 
           - name: Build Windows x64 Debug
