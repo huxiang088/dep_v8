@@ -46,7 +46,7 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                git switch --track origin/refs/heads/${{inputs.tag}}-lkgr
+                git switch --track refs/branch-heads/${{inputs.tag}}-lkgr
                 commit=$(git rev-parse HEAD)
                 echo "$commit"
                 gclient sync
