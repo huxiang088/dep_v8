@@ -37,6 +37,7 @@ jobs:
                 fetch v8
                 gclient sync
                 git fetch origin
+                git branch -r --contains ${{inputs.commit}}
                 git checkout ${{inputs.commit}}
                 gclient sync
 
