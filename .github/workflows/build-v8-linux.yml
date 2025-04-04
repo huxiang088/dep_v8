@@ -50,7 +50,7 @@ jobs:
                 git config remote.origin.fetch "+refs/branch-heads/*:refs/remotes/branch-heads/*"
                 git config remote.origin.fetch "+refs/tags/*:refs/tags/*"
                 git fetch --all
-                git switch --track ${{inputs.tag}}-lkgr origin/${{inputs.tag}}-lkgr
+                git switch ${{inputs.tag}}-lkgr origin/${{inputs.tag}}-lkgr
                 gclient sync
 
           - name: Build V8 Linux x64 Debug
@@ -138,7 +138,7 @@ jobs:
                 git config remote.origin.fetch "+refs/branch-heads/*:refs/remotes/branch-heads/*"
                 git config remote.origin.fetch "+refs/tags/*:refs/tags/*"
                 git fetch --all
-                git switch --track ${{inputs.tag}}-lkgr origin/${{inputs.tag}}-lkgr
+                git switch ${{inputs.tag}}-lkgr origin/${{inputs.tag}}-lkgr
                 gclient sync
 
           - name: Build V8 Linux arm64 Debug
