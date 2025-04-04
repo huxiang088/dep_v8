@@ -47,6 +47,7 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
+                git checkout ${{inputs.commit}}
                 gclient sync
 
           - name: Build Windows x64 Debug
@@ -132,6 +133,7 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
+                git checkout ${{inputs.commit}}
                 gclient sync
 
           - name: Build Windows arm64 Debug
