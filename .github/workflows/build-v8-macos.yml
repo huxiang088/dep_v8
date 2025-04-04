@@ -46,7 +46,8 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                git switch --track origin/${{inputs.tag}}-lkgr
+                git fetch origin refs/branch-heads/${{inputs.tag}}:refs/remotes/origin/${{inputs.tag}}
+                git checkout -b ${{inputs.tag}} origin/${{inputs.tag}}
                 gclient sync
 
           - name: Build V8 MacOS x64 Debug
@@ -109,7 +110,8 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                git switch --track origin/${{inputs.tag}}-lkgr
+                git fetch origin refs/branch-heads/${{inputs.tag}}:refs/remotes/origin/${{inputs.tag}}
+                git checkout -b ${{inputs.tag}} origin/${{inputs.tag}}
                 gclient sync
 
           - name: Build V8 MacOS arm64 Debug
