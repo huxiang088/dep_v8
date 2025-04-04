@@ -77,8 +77,8 @@ jobs:
             run: |
                 echo "${{inputs.commit}}" >> commit.txt
                 sudo apt-get update && sudo apt-get install -y p7zip-full
-                7z a v8_linux_x64_debug.7z ./v8/v8/out/x64.debug/obj/v8_monolith.lib ./v8/v8/include commit.txt
-                7z a v8_linux_x64_release.7z ./v8/v8/out/x64.release/obj/v8_monolith.lib ./v8/v8/include commit.txt
+                7z a v8_linux_x64_debug.7z ./v8/v8/out/x64.debug/obj/v8_monolith.a ./v8/v8/include commit.txt
+                7z a v8_linux_x64_release.7z ./v8/v8/out/x64.release/obj/v8_monolith.a ./v8/v8/include commit.txt
         
           - name: Upload Archive
             uses: actions/upload-artifact@v4
@@ -128,8 +128,8 @@ jobs:
             run: |
                 echo "${{inputs.commit}}" >> commit.txt
                 sudo apt-get update && sudo apt-get install -y p7zip-full
-                7z a v8_linux_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/v8_monolith.lib ./v8/v8/include commit.txt
-                7z a v8_linux_arm64_release.7z ./v8/v8/out/arm64.release/obj/v8_monolith.lib ./v8/v8/include commit.txt
+                7z a v8_linux_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/v8_monolith.a ./v8/v8/include commit.txt
+                7z a v8_linux_arm64_release.7z ./v8/v8/out/arm64.release/obj/v8_monolith.a ./v8/v8/include commit.txt
         
           - name: Upload Archive
             uses: actions/upload-artifact@v4
