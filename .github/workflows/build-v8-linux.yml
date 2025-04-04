@@ -32,11 +32,9 @@ jobs:
           - name: Checkout V8 Source Code
             shell: bash
             run: |
-                git config --global credential.helper ""
                 mkdir v8
                 cd v8
                 fetch v8
-                gclient sync
                 git switch --track origin/${{inputs.tag}}-lkgr
                 commit=$(git rev-parse HEAD)
                 echo "$commit"
@@ -112,7 +110,6 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                gclient sync
                 git switch --track origin/${{inputs.tag}}-lkgr
                 gclient sync
 

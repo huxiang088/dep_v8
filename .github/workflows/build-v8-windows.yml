@@ -47,7 +47,6 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                gclient sync
                 git switch --track origin/${{inputs.tag}}-lkgr
                 git rev-parse HEAD
                 gclient sync
@@ -135,7 +134,6 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                gclient sync
                 git switch --track origin/${{inputs.tag}}-lkgr
                 gclient sync
 
