@@ -30,8 +30,8 @@ jobs:
             run: |
                 current_commit="${{steps.current_commit.outputs.content}}"
                 current_commit="${current_commit%"${current_commit##*[![:space:]]}"}"
-                latest_commit=$(curl -s https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Linux&num=1 | jq -r '.[0].hashes.v8')
-                latest_tag=$(curl -s https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Linux&num=1 | jq -r '.[0].version')
+                latest_commit=$(wget -qO- https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Windows&num=1 | jq -r '.[0].hashes.v8')
+                latest_tag=$(wget -qO- https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Windows&num=1 | jq -r '.[0].version')
                 echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
                 echo "Current commit: $current_commit"
                 echo "Latest commit: $latest_commit"
