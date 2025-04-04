@@ -48,6 +48,7 @@ jobs:
                 cd v8
                 fetch v8
                 gclient sync
+                git branch --contains ${{inputs.commit}}
                 git branch -r
                 git checkout ${{inputs.commit}}
                 gclient sync
