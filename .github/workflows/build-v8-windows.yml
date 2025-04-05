@@ -57,7 +57,7 @@ jobs:
                 git config remote.origin.fetch "+refs/branch-heads/*:refs/remotes/branch-heads/*"
                 git config remote.origin.fetch "+refs/tags/*:refs/tags/*"
                 gclient sync
-                git fetch -all
+                git fetch --all
                 git checkout ${{inputs.commit}}
                 gclient sync
 
@@ -149,7 +149,7 @@ jobs:
                 git config remote.origin.fetch "+refs/branch-heads/*:refs/remotes/branch-heads/*"
                 git config remote.origin.fetch "+refs/tags/*:refs/tags/*"
                 gclient sync
-                git fetch -all
+                git fetch --all
                 git checkout ${{inputs.commit}}
                 gclient sync
 
