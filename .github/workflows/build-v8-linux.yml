@@ -55,7 +55,7 @@ jobs:
                 git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
                 git config remote.origin.fetch "+refs/branch-heads/*:refs/remotes/branch-heads/*"
                 git config remote.origin.fetch "+refs/tags/*:refs/tags/*"
-                git pull
+                git fetch --all --unshallow
                 git checkout -b ${{inputs.tag}}-lkgr refs/remotes/origin/${{inputs.tag}}-lkgr
                 gclient sync
 
