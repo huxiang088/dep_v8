@@ -56,7 +56,7 @@ jobs:
                 git config remote.origin.fetch "+refs/branch-heads/*:refs/remotes/branch-heads/*"
                 git config remote.origin.fetch "+refs/tags/*:refs/tags/*"
                 git fetch --all
-                git checkout refs/remotes/origin/${{inputs.tag}}-lkgr
+                git checkout ${{inputs.commit}}
                 gclient sync
 
           - name: Build V8 MacOS x64 Debug
@@ -123,7 +123,7 @@ jobs:
                 git config remote.origin.fetch "+refs/branch-heads/*:refs/remotes/branch-heads/*"
                 git config remote.origin.fetch "+refs/tags/*:refs/tags/*"
                 git fetch --all
-                git checkout refs/remotes/origin/${{inputs.tag}}-lkgr
+                git checkout ${{inputs.commit}}
                 gclient sync
 
           - name: Build V8 MacOS arm64 Debug
