@@ -52,7 +52,11 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                cd v8
+
+          - name: Checkout Target Commit
+            shell: cmd
+            run: |
+                cd v8/v8
                 git checkout ${{inputs.commit}}
                 gclient sync
 
@@ -137,7 +141,11 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                cd v8
+
+          - name: Checkout Target Commit
+            shell: cmd
+            run: |
+                cd v8/v8
                 git checkout ${{inputs.commit}}
                 gclient sync
 

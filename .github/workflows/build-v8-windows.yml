@@ -53,7 +53,12 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                cd v8
+
+          - name: Checkout Target Commit
+            shell: cmd
+            run: |
+                set DEPOT_TOOLS_WIN_TOOLCHAIN=0
+                cd v8\v8
                 git checkout ${{inputs.commit}}
                 gclient sync
 
@@ -141,9 +146,10 @@ jobs:
                 cd v8
                 fetch v8
 
-          - name: test
+          - name: Checkout Target Commit
             shell: cmd
             run: |
+                set DEPOT_TOOLS_WIN_TOOLCHAIN=0
                 cd v8\v8
                 git checkout ${{inputs.commit}}
                 gclient sync
