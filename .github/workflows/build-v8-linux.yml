@@ -22,7 +22,7 @@ on:
                 required: true
 
 jobs:
-    build-x64:
+    x64:
         runs-on: ubuntu-latest
         steps:
 
@@ -111,7 +111,7 @@ jobs:
                     *.7z
                 retention-days: 7
 
-    build-arm64:
+    arm64:
         runs-on: ubuntu-latest
         steps:
 
