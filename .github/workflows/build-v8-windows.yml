@@ -47,8 +47,11 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                git fetch origin refs/branch-heads/${{inputs.tag}}:refs/remotes/origin/${{inputs.tag}}
-                git checkout -b ${{inputs.tag}} origin/${{inputs.tag}}
+                git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+                git config remote.origin.fetch "+refs/branch-heads/*:refs/remotes/branch-heads/*"
+                git config remote.origin.fetch "+refs/tags/*:refs/tags/*"
+                git fetch --all
+                git checkout refs/remotes/origin/${{inputs.tag}}-lkgr
                 gclient sync
 
           - name: Build Windows x64 Debug
@@ -134,8 +137,11 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                git fetch origin refs/branch-heads/${{inputs.tag}}:refs/remotes/origin/${{inputs.tag}}
-                git checkout -b ${{inputs.tag}} origin/${{inputs.tag}}
+                git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+                git config remote.origin.fetch "+refs/branch-heads/*:refs/remotes/branch-heads/*"
+                git config remote.origin.fetch "+refs/tags/*:refs/tags/*"
+                git fetch --all
+                git checkout refs/remotes/origin/${{inputs.tag}}-lkgr
                 gclient sync
 
           - name: Build Windows arm64 Debug
