@@ -52,6 +52,8 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
+                gclient sync
+                ls
                 git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
                 git config remote.origin.fetch "+refs/branch-heads/*:refs/remotes/branch-heads/*"
                 git config remote.origin.fetch "+refs/tags/*:refs/tags/*"
