@@ -54,7 +54,7 @@ jobs:
                 fetch v8
 
           - name: Checkout Target Commit
-            shell: cmd
+            shell: bash
             run: |
                 cd v8/v8
                 git checkout ${{inputs.commit}}
@@ -122,7 +122,7 @@ jobs:
                 fetch v8
 
           - name: Checkout Target Commit
-            shell: cmd
+            shell: bash
             run: |
                 cd v8/v8
                 git checkout ${{inputs.commit}}
