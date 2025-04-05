@@ -53,7 +53,6 @@ jobs:
                 cd v8
                 fetch v8
                 cd v8
-                chmod 755 .git
                 git checkout ${{inputs.commit}}
                 gclient sync
 
@@ -118,7 +117,6 @@ jobs:
                 cd v8
                 fetch v8
                 cd v8
-                chmod 755 .git
                 git checkout ${{inputs.commit}}
                 gclient sync
 
