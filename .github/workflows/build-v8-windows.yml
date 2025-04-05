@@ -3,7 +3,7 @@
 on:
     workflow_call:
         inputs:
-            tag:
+            version:
                 type: string
                 required: true
             commit:
@@ -14,7 +14,7 @@ on:
                 value: ${{github.run_id}}
     workflow_dispatch:
         inputs:
-            tag:
+            version:
                 type: string
                 required: true
             commit:
@@ -54,6 +54,7 @@ jobs:
                 cd v8
                 fetch v8
                 cd v8
+                dir
                 git checkout ${{inputs.commit}}
                 gclient sync
 
@@ -97,9 +98,9 @@ jobs:
           - name: Compress Product
             shell: pwsh
             run: |
-                echo ${{inputs.tag}} >> tag.txt
-                7z a v8_windows_x64_debug.7z .\v8\v8\out\x64.debug\obj\v8_monolith.lib .\v8\v8\include tag.txt
-                7z a v8_windows_x64_release.7z .\v8\v8\out\x64.release\obj\v8_monolith.lib .\v8\v8\include tag.txt
+                echo ${{inputs.version}} >> VERSION
+                7z a v8_windows_x64_debug.7z .\v8\v8\out\x64.debug\obj\v8_monolith.lib .\v8\v8\include VERSION
+                7z a v8_windows_x64_release.7z .\v8\v8\out\x64.release\obj\v8_monolith.lib .\v8\v8\include VERSION
 
           - name: Upload Archive
             uses: actions/upload-artifact@v4
@@ -163,9 +164,9 @@ jobs:
           - name: Compress Product
             shell: pwsh
             run: |
-                echo ${{inputs.tag}} >> tag.txt
-                7z a v8_windows_arm64_debug.7z .\v8\v8\out\arm64.debug\obj\v8_monolith.lib .\v8\v8\include tag.txt
-                7z a v8_windows_arm64_release.7z .\v8\v8\out\arm64.release\obj\v8_monolith.lib .\v8\v8\include tag.txt
+                echo ${{inputs.version}} >> VERSION
+                7z a v8_windows_arm64_debug.7z .\v8\v8\out\arm64.debug\obj\v8_monolith.lib .\v8\v8\include VERSION
+                7z a v8_windows_arm64_release.7z .\v8\v8\out\arm64.release\obj\v8_monolith.lib .\v8\v8\include VERSION
 
           - name: Upload Archive
             uses: actions/upload-artifact@v4

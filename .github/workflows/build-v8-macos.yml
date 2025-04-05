@@ -3,7 +3,7 @@
 on:
     workflow_call:
         inputs:
-            tag:
+            version:
                 type: string
                 required: true
             commit:
@@ -14,7 +14,7 @@ on:
                 value: ${{github.run_id}}
     workflow_dispatch:
         inputs:
-            tag:
+            version:
                 type: string
                 required: true
             commit:
@@ -73,10 +73,10 @@ jobs:
           - name: Compress Product
             shell: bash
             run: |
-                echo "${{inputs.tag}}" >> tag.txt
+                echo "${{inputs.version}}" >> VERSION
                 brew install p7zip
-                7z a v8_macos_x64_debug.7z ./v8/v8/out/x64.debug/obj/v8_monolith.a ./v8/v8/include tag.txt
-                7z a v8_macos_x64_release.7z ./v8/v8/out/x64.release/obj/v8_monolith.a ./v8/v8/include tag.txt
+                7z a v8_macos_x64_debug.7z ./v8/v8/out/x64.debug/obj/v8_monolith.a ./v8/v8/include VERSION
+                7z a v8_macos_x64_release.7z ./v8/v8/out/x64.release/obj/v8_monolith.a ./v8/v8/include VERSION
         
           - name: Upload Archive
             uses: actions/upload-artifact@v4
@@ -160,10 +160,10 @@ jobs:
           - name: Compress Product
             shell: bash
             run: |
-                echo "${{inputs.tag}}" >> tag.txt
+                echo "${{inputs.version}}" >> VERSION
                 brew install p7zip
-                7z a v8_macos_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/v8_monolith.a ./v8/v8/include tag.txt
-                7z a v8_macos_arm64_release.7z ./v8/v8/out/arm64.release/obj/v8_monolith.a ./v8/v8/include tag.txt
+                7z a v8_macos_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/v8_monolith.a ./v8/v8/include VERSION
+                7z a v8_macos_arm64_release.7z ./v8/v8/out/arm64.release/obj/v8_monolith.a ./v8/v8/include VERSION
         
           - name: Upload Archive
             uses: actions/upload-artifact@v4
