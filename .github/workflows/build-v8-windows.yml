@@ -54,8 +54,8 @@ jobs:
                 cd v8
                 fetch v8
                 cd v8
-                dir
                 git checkout ${{inputs.commit}}
+                gclient sync
 
           - name: Build Windows x64 Debug
             shell: pwsh
@@ -140,7 +140,11 @@ jobs:
                 mkdir v8
                 cd v8
                 fetch v8
-                cd v8
+
+          - name: test
+            shell: cmd
+            run: |
+                cd v8\v8
                 git checkout ${{inputs.commit}}
                 gclient sync
 
