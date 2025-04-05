@@ -56,7 +56,6 @@ jobs:
                 cd v8
                 dir
                 git checkout ${{inputs.commit}}
-                gclient sync
 
           - name: Build Windows x64 Debug
             shell: pwsh
