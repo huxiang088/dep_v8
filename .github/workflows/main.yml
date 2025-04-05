@@ -11,6 +11,7 @@ jobs:
         outputs:
             update: ${{steps.should_update.outputs.update}}
             latest_tag: ${{steps.should_update.outputs.latest_tag}}
+            latest_commit: ${{steps.should_update.outputs.latest_commit}}
         steps:
 
           - name: Checkout This Repo
@@ -30,9 +31,12 @@ jobs:
                 current_tag="${{steps.current_tag.outputs.content}}"
                 current_tag="${current_tag%"${current_tag##*[![:space:]]}"}"
 
-                latest_tag=$(curl -s "https://chromiumdash.appspot.com/fetch_milestones?channel=Stable&platform=Windows&num=1" | jq -r '.[0].v8_branch')
+                latest_commit=$(curl -s "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Windows&num=1" | jq -r '.[0].hashes.v8')
+                echo "latest_commit=$latest_commit" >> $GITHUB_OUTPUT
 
+                latest_tag=$(curl -s "https://chromiumdash.appspot.com/fetch_milestones?channel=Stable&platform=Windows&num=1" | jq -r '.[0].v8_branch')
                 echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
+                
                 echo "Built tag: $current_tag"
                 echo "Latest tag: $latest_tag"
 
@@ -50,6 +54,7 @@ jobs:
         uses: ./.github/workflows/build-v8-windows.yml
         with:
             tag: ${{needs.check.outputs.latest_tag}}
+            commit: ${{needs.check.outputs.latest_commit}}
 
     build-linux:
         needs: check
@@ -57,6 +62,7 @@ jobs:
         uses: ./.github/workflows/build-v8-linux.yml
         with:
             tag: ${{needs.check.outputs.latest_tag}}
+            commit: ${{needs.check.outputs.latest_commit}}
 
     build-macos:
         needs: check
@@ -64,6 +70,7 @@ jobs:
         uses: ./.github/workflows/build-v8-macos.yml
         with:
             tag: ${{needs.check.outputs.latest_tag}}
+            commit: ${{needs.check.outputs.latest_commit}}
 
     update-tag:
         runs-on: ubuntu-latest

@@ -6,12 +6,18 @@ on:
             tag:
                 type: string
                 required: true
+            commit:
+                type: string
+                required: true
         outputs:
             runid:
                 value: ${{github.run_id}}
     workflow_dispatch:
         inputs:
             tag:
+                type: string
+                required: true
+            commit:
                 type: string
                 required: true
 

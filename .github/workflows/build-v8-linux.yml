@@ -6,12 +6,18 @@ on:
             tag:
                 type: string
                 required: true
+            commit:
+                type: string
+                required: true
         outputs:
             runid:
                 value: ${{github.run_id}}
     workflow_dispatch:
         inputs:
             tag:
+                type: string
+                required: true
+            commit:
                 type: string
                 required: true
 
@@ -29,6 +35,8 @@ jobs:
           - name: Set Git Configs
             shell: bash
             run: |
+                git config branch.autosetupmerge always
+                git config branch.autosetuprebase always
                 git config --global core.autocrlf false
                 git config --global core.filemode false
                 git config --global core.longpaths true
@@ -47,7 +55,7 @@ jobs:
                 git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
                 git config remote.origin.fetch "+refs/branch-heads/*:refs/remotes/branch-heads/*"
                 git config remote.origin.fetch "+refs/tags/*:refs/tags/*"
-                git fetch --all
+                git fetch --all --unshallow
                 git checkout -b ${{inputs.tag}}-lkgr refs/remotes/origin/${{inputs.tag}}-lkgr
                 gclient sync
 
@@ -115,6 +123,8 @@ jobs:
           - name: Set Git Configs
             shell: bash
             run: |
+                git config branch.autosetupmerge always
+                git config branch.autosetuprebase always
                 git config --global core.autocrlf false
                 git config --global core.filemode false
                 git config --global core.longpaths true

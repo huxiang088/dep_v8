@@ -6,12 +6,18 @@ on:
             tag:
                 type: string
                 required: true
+            commit:
+                type: string
+                required: true
         outputs:
             runid:
                 value: ${{github.run_id}}
     workflow_dispatch:
         inputs:
             tag:
+                type: string
+                required: true
+            commit:
                 type: string
                 required: true
 
@@ -29,6 +35,8 @@ jobs:
           - name: Set Git Configs
             shell: bash
             run: |
+                git config branch.autosetupmerge always
+                git config branch.autosetuprebase always
                 git config --global core.autocrlf false
                 git config --global core.filemode false
                 git config --global core.longpaths true
@@ -94,6 +102,8 @@ jobs:
           - name: Set Git Configs
             shell: bash
             run: |
+                git config branch.autosetupmerge always
+                git config branch.autosetuprebase always
                 git config --global core.autocrlf false
                 git config --global core.filemode false
                 git config --global core.longpaths true
