@@ -101,7 +101,7 @@ jobs:
           - name: Commit Changes
             id: commit
             run: |
-                git add COMMIT
+                git add CURRENT_VERSION
                 git commit -m "Automated: Update VERSION to $LATEST_VERSION"
 
                 commit=$(git rev-parse HEAD)
