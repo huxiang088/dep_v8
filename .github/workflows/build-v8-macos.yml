@@ -77,9 +77,11 @@ jobs:
           - name: Compress Product
             shell: bash
             run: |
-                echo "${{inputs.version}}" >> VERSION
-                7z a v8_macos_x64_debug.7z ./v8/v8/out/x64.debug/obj/libv8_monolith.a ./v8/v8/include VERSION
-                7z a v8_macos_x64_release.7z ./v8/v8/out/x64.release/obj/libv8_monolith.a ./v8/v8/include VERSION
+                echo "${{inputs.version}}" >> VERSION.txt
+                mkdir -p temp/include/v8
+                cp -a ./include/. ./temp/include/v8/
+                7z a v8_macos_x64_debug.7z ./v8/v8/out/x64.debug/obj/libv8_monolith.a ./temp/include VERSION.txt
+                7z a v8_macos_x64_release.7z ./v8/v8/out/x64.release/obj/libv8_monolith.a ./temp/include VERSION.txt
         
           - name: Upload Archive
             uses: actions/upload-artifact@v4
@@ -165,9 +167,11 @@ jobs:
           - name: Compress Product
             shell: bash
             run: |
-                echo "${{inputs.version}}" >> VERSION
-                7z a v8_macos_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/libv8_monolith.a ./v8/v8/include VERSION
-                7z a v8_macos_arm64_release.7z ./v8/v8/out/arm64.release/obj/libv8_monolith.a ./v8/v8/include VERSION
+                echo "${{inputs.version}}" >> VERSION.txt
+                mkdir -p temp/include/v8
+                cp -a ./include/. ./temp/include/v8/
+                7z a v8_macos_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/libv8_monolith.a ./temp/include VERSION.txt
+                7z a v8_macos_arm64_release.7z ./v8/v8/out/arm64.release/obj/libv8_monolith.a ./temp/include VERSION.txt
         
           - name: Upload Archive
             uses: actions/upload-artifact@v4
