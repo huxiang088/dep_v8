@@ -65,7 +65,7 @@ jobs:
             shell: cmd
             run: |
                 set DEPOT_TOOLS_WIN_TOOLCHAIN=0
-                cd v8\v8
+                cd v8
                 gclient sync
 
           - name: Build Windows x64 Debug
