@@ -65,6 +65,7 @@ jobs:
           - name: SYNC
             shell: cmd
             run: |
+                cd v8\v8
                 gclient sync
 
           - name: Build Windows x64 Debug
