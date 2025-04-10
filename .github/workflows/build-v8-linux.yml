@@ -65,6 +65,16 @@ jobs:
                 cd v8/v8
                 gclient sync
 
+          - name: Install GCC14
+            shell: bash
+            run: |
+                sudo apt update
+                sudo apt remove gcc g++
+                sudo apt autoremove
+                sudo apt install gcc-14 g++-14
+                sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
+                sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
+
           - name: Build V8 Linux x64 Debug
             shell: bash
             run: |
@@ -159,6 +169,16 @@ jobs:
             run: |
                 cd v8/v8
                 gclient sync
+
+          - name: Install GCC14
+            shell: bash
+            run: |
+                sudo apt update
+                sudo apt remove gcc g++
+                sudo apt autoremove
+                sudo apt install gcc-14 g++-14
+                sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
+                sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
 
           - name: Build V8 Linux arm64 Debug
             shell: bash
