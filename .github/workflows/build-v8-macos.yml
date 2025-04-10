@@ -58,6 +58,11 @@ jobs:
             run: |
                 cd v8/v8
                 git checkout ${{inputs.commit}}
+
+          - name: Sync GClient
+            shell: bash
+            run: |
+                cd v8/v8
                 gclient sync
 
           - name: Build V8 MacOS x64 Debug
@@ -127,6 +132,11 @@ jobs:
             run: |
                 cd v8/v8
                 git checkout ${{inputs.commit}}
+
+          - name: Sync GClient
+            shell: bash
+            run: |
+                cd v8/v8
                 gclient sync
 
           - name: Build V8 MacOS arm64 Debug

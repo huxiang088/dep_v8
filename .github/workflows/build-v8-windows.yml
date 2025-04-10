@@ -61,7 +61,7 @@ jobs:
                 cd v8\v8
                 git checkout ${{inputs.commit}}
 
-          - name: SYNC
+          - name: Sync GClient
             shell: cmd
             run: |
                 set DEPOT_TOOLS_WIN_TOOLCHAIN=0
@@ -160,6 +160,12 @@ jobs:
                 set DEPOT_TOOLS_WIN_TOOLCHAIN=0
                 cd v8\v8
                 git checkout ${{inputs.commit}}
+
+          - name: Sync GClient
+            shell: cmd
+            run: |
+                set DEPOT_TOOLS_WIN_TOOLCHAIN=0
+                cd v8\v8
                 gclient sync
 
           - name: Build Windows arm64 Debug
