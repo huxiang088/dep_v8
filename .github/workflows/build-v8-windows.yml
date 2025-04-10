@@ -60,11 +60,11 @@ jobs:
                 set DEPOT_TOOLS_WIN_TOOLCHAIN=0
                 cd v8\v8
                 git checkout ${{inputs.commit}}
-                gclient sync
 
           - name: SYNC
             shell: cmd
             run: |
+                set DEPOT_TOOLS_WIN_TOOLCHAIN=0
                 cd v8\v8
                 gclient sync
 
