@@ -62,6 +62,11 @@ jobs:
                 git checkout ${{inputs.commit}}
                 gclient sync
 
+          - name: SYNC
+            shell: cmd
+            run: |
+                gclient sync
+
           - name: Build Windows x64 Debug
             shell: pwsh
             run: |
