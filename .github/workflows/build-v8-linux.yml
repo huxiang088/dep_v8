@@ -65,6 +65,12 @@ jobs:
                 cd v8/v8
                 gclient sync
 
+          - name: Update GCC
+            uses: egor-tensin/setup-gcc@v1
+            with:
+                version: latest
+                platform: x64
+
           - name: Build V8 Linux x64 Debug
             shell: bash
             run: |
@@ -159,6 +165,12 @@ jobs:
             run: |
                 cd v8/v8
                 gclient sync
+
+          - name: Update GCC
+            uses: egor-tensin/setup-gcc@v1
+            with:
+                version: latest
+                platform: x64
 
           - name: Build V8 Linux arm64 Debug
             shell: bash
