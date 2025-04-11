@@ -73,6 +73,7 @@ jobs:
             run: |
                 cd v8\v8\build\toolchain\win
                 $lines = Get-Content "toolchain.gni"
+                $lines
                 $lines[771] = 'clang_toolchain_prefix = ""'
                 $lines[778] = ""
                 $lines[779] = ""
