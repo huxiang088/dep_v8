@@ -169,15 +169,10 @@ jobs:
                 gclient sync -D
 
           - name: Install ARM64 Debugger Tools
-            shell: pwsh
-            run: |
-                Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2313119" -OutFile winsdksetup.exe
-                .\winsdksetup.exe /features + /quiet /norestart
-                C:
-                cd "C:\Program Files (x86)\Windows Kits\10\Debuggers"
-                ls
-                cd "arm64"
-                ls
+            uses: ChristopheLav/windows-sdk-install@v1
+            with:
+                version-sdk: 26100
+                features: "OptionId.WindowsDesktopDebuggers"
 
           - name: Build Windows arm64 Debug
             shell: pwsh
@@ -191,6 +186,10 @@ jobs:
             shell: pwsh
             run: |
                 $env:DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
+                C:
+                cd "C:\Program Files (x86)\Windows Kits\10\Debuggers"
+                ls
+                cd "arm64"
                 cd v8\v8
                 gn gen out/arm64.release --args='v8_target_cpu=\"arm64\" target_cpu=\"arm64\" is_debug=false symbol_level=0 is_clang=false is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_custom_libcxx_for_host=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=false v8_enable_verify_heap=\"\" v8_enable_object_print=\"\"'
                 ninja -C out/arm64.release v8_monolith v8_hello_world
