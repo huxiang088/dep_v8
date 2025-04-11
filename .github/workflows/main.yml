@@ -20,16 +20,16 @@ jobs:
                 ref: main
 
           - name: Get Last Built Version
-            id: current_version
+            id: read-commit-file
             uses: juliangruber/read-file-action@v1
             with:
-                path: ./CURRENT_VERSION
+                path: ./CURRENT_COMMIT
 
           - name: Determine Should Update
             id: should_update
             run: |
-                current_version="${{steps.current_version.outputs.content}}"
-                current_version="${current_version%"${current_version##*[![:space:]]}"}"
+                current_commit="${{steps.read-commit-file.outputs.content}}"
+                current_commit="${current_commit%"${current_commit##*[![:space:]]}"}"
 
                 latest_commit=$(curl -s "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Windows&num=1" | jq -r '.[0].hashes.v8')
                 echo "latest_commit=$latest_commit" >> $GITHUB_OUTPUT
@@ -37,10 +37,10 @@ jobs:
                 latest_version=$(curl -s "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Windows&num=1" | jq -r '.[0].version')
                 echo "latest_version=$latest_version" >> $GITHUB_OUTPUT
                 
-                echo "Built version: $current_version"
-                echo "Latest version: $latest_version"
+                echo "Built commit: $current_commit"
+                echo "Latest commit: $latest_commit"
 
-                if [ "$current_version" = "$latest_version" ]; then
+                if [ "$current_commit" = "$latest_commit" ]; then
                     echo "update=false" >> $GITHUB_OUTPUT
                     echo "Build skipped."
                 else
@@ -78,7 +78,7 @@ jobs:
         permissions:
             contents: write
         env:
-            LATEST_VERSION: ${{needs.check.outputs.latest_version}}
+            LATEST_COMMIT: ${{needs.check.outputs.latest_commit}}
         outputs:
             updated_commit: ${{steps.commit.outputs.commit}}
         steps:
@@ -96,13 +96,13 @@ jobs:
           - name: Update Commit File
             run: |
                 set +o noclobber
-                echo "$LATEST_VERSION" > ./CURRENT_VERSION
+                echo "$LATEST_COMMIT" > ./CURRENT_COMMIT
 
           - name: Commit Changes
             id: commit
             run: |
-                git add CURRENT_VERSION
-                git commit -m "Automated: Update VERSION to $LATEST_VERSION"
+                git add CURRENT_COMMIT
+                git commit -m "Automated: Update Ccurrent commit to $LATEST_COMMIT"
 
                 commit=$(git rev-parse HEAD)
                 echo "commit=$commit" >> $GITHUB_OUTPUT
@@ -176,4 +176,4 @@ jobs:
                 artifacts: v8_windows_x64/v8_windows_x64_debug.7z, v8_windows_x64/v8_windows_x64_release.7z, v8_windows_arm64/v8_windows_arm64_debug.7z, v8_windows_arm64/v8_windows_arm64_release.7z, v8_linux_x64/v8_linux_x64_debug.7z, v8_linux_x64/v8_linux_x64_release.7z, v8_linux_arm64/v8_linux_arm64_debug.7z, v8_linux_arm64/v8_linux_arm64_release.7z, v8_macos_x64/v8_macos_x64_debug.7z, v8_macos_x64/v8_macos_x64_release.7z, v8_macos_arm64/v8_macos_arm64_debug.7z, v8_macos_arm64/v8_macos_arm64_release.7z
                 commit: ${{needs.update-version.outputs.updated_commit}}
                 tag: ${{needs.check.outputs.latest_version}}
-                body: Build for version ${{needs.check.outputs.latest_version}}.
+                body: Build for version ${{needs.check.outputs.latest_version}} (commit ${{needs.check.outputs.latest_commit}}).

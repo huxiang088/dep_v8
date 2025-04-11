@@ -88,6 +88,7 @@ jobs:
             shell: bash
             run: |
                 echo "${{inputs.version}}" >> VERSION.txt
+                echo "${{inputs.commit}}" >> VERSION.txt
                 mkdir -p temp/include/v8
                 cp -a ./v8/v8/include/* ./temp/include/v8
                 7z a v8_macos_x64_debug.7z ./v8/v8/out/x64.debug/obj/libv8_monolith.a ./temp/include VERSION.txt
@@ -188,6 +189,7 @@ jobs:
             shell: bash
             run: |
                 echo "${{inputs.version}}" >> VERSION.txt
+                echo "${{inputs.commit}}" >> VERSION.txt
                 mkdir -p temp/include/v8
                 cp -a ./v8/v8/include/* ./temp/include/v8
                 7z a v8_macos_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/libv8_monolith.a ./temp/include VERSION.txt
