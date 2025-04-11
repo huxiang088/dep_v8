@@ -177,6 +177,7 @@ jobs:
           - name: Install Sysroot
             shell: bash
             run: |
+                cd v8/v8
                 python3 build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
 
           - name: Build V8 Linux arm64 Debug
