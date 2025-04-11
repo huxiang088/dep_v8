@@ -46,8 +46,7 @@ jobs:
           - name: Install Debugging Tools for Windows
             shell: pwsh
             run: |
-                Invoke-WebRequest -Uri "https://aka.ms/windowssdkinstaller" -OutFile "winsdksetup.exe"
-                Start-Process -FilePath ".\winsdksetup.exe" -ArgumentList "/quiet /norestart /features +DebuggingTools" -Wait
+                winget install --source winget --exact --id Microsoft.WindowsSDK.10.0.26100
 
           - name: Checkout Depot Tools
             uses: newkdev/setup-depot-tools@v1.0.1
@@ -152,8 +151,7 @@ jobs:
           - name: Install Debugging Tools for Windows
             shell: pwsh
             run: |
-                Invoke-WebRequest -Uri "https://aka.ms/windowssdkinstaller" -OutFile "winsdksetup.exe"
-                Start-Process -FilePath ".\winsdksetup.exe" -ArgumentList "/quiet /norestart /features +DebuggingTools" -Wait
+                winget install --source winget --exact --id Microsoft.WindowsSDK.10.0.26100
 
           - name: Checkout Depot Tools
             uses: newkdev/setup-depot-tools@v1.0.1
