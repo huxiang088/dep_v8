@@ -173,6 +173,11 @@ jobs:
             run: |
                 Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/?linkid=2120843' -OutFile winsdksetup.exe
                 .\winsdksetup.exe /features OptionId.WindowsDesktopDebuggers /quiet /norestart
+                C:
+                cd "C:\Program Files (x86)\Windows Kits\10\Debuggers"
+                ls
+                cd "arm64"
+                ls
 
           - name: Build Windows arm64 Debug
             shell: pwsh
