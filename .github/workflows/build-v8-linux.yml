@@ -69,6 +69,7 @@ jobs:
             shell: bash
             run: |
                 sudo apt update
+                sudo apt install build-essential
                 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
                 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
 
@@ -171,6 +172,7 @@ jobs:
             shell: bash
             run: |
                 sudo apt update
+                sudo apt install build-essential
                 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
                 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
 
