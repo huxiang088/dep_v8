@@ -139,7 +139,7 @@ jobs:
           - name: Set Global Git Configs
             shell: bash
             run: |
-                dpkg -l | grep clang
+                dpkg -l | grep llvm
                 git config --global core.autocrlf false
                 git config --global core.filemode false
                 git config --global core.longpaths true
@@ -173,11 +173,11 @@ jobs:
           - name: Use GCC14
             shell: bash
             run: |
+                sudo apt purge clang-16 clang-17 clang-18 clang-format-16 clang-format-17 clang-format-18 clang-tidy-16 clang-tidy-17 clang-tidy-18 clang-tools-16 clang-tools-17 clang-tools-18 libclang-common-16-dev libclang-common-17-dev:amd64 libclang-common-18-dev:amd64 libclang-cpp16t64 libclang-cpp17t64 libclang-cpp18 libclang-rt-16-dev:amd64 libclang-rt-17-dev:amd64 libclang-rt-18-dev:amd64 libclang1-16t64 libclang1-17t64 libclang1-18
                 sudo apt update
                 sudo apt install build-essential
                 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
                 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
-                sudo apt purge 
 
           - name: Install Sysroot
             shell: bash
