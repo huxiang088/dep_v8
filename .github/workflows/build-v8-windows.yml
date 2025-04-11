@@ -43,6 +43,12 @@ jobs:
                 git config --global core.preloadindex true
                 git config --global core.fscache true
 
+          - name: Install Debugging Tools for Windows
+            shell: pwsh
+            run: |
+                Invoke-WebRequest -Uri "https://aka.ms/windowssdkinstaller" -OutFile "winsdksetup.exe"
+                Start-Process -FilePath ".\winsdksetup.exe" -ArgumentList "/quiet /norestart /features +DebuggingTools" -Wait
+
           - name: Checkout Depot Tools
             uses: newkdev/setup-depot-tools@v1.0.1
 
@@ -142,6 +148,12 @@ jobs:
                 git config --global core.longpaths true
                 git config --global core.preloadindex true
                 git config --global core.fscache true
+
+          - name: Install Debugging Tools for Windows
+            shell: pwsh
+            run: |
+                Invoke-WebRequest -Uri "https://aka.ms/windowssdkinstaller" -OutFile "winsdksetup.exe"
+                Start-Process -FilePath ".\winsdksetup.exe" -ArgumentList "/quiet /norestart /features +DebuggingTools" -Wait
 
           - name: Checkout Depot Tools
             uses: newkdev/setup-depot-tools@v1.0.1
