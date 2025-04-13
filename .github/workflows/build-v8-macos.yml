@@ -65,6 +65,11 @@ jobs:
                 cd v8/v8
                 gclient sync -D
 
+          - name: Update Clang
+            shell: bash
+            run: |
+                brew install llvm
+
           - name: Build V8 MacOS x64 Debug
             shell: bash
             run: |
@@ -139,6 +144,11 @@ jobs:
             run: |
                 cd v8/v8
                 gclient sync -D
+
+          - name: Update Clang
+            shell: bash
+            run: |
+                brew install llvm
 
           - name: Build V8 MacOS arm64 Debug
             shell: bash
