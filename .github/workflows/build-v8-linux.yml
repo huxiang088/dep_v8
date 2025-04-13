@@ -69,15 +69,15 @@ jobs:
             shell: bash
             run: |
                 cd v8/v8
-                gn gen out/x64.debug --args='v8_target_cpu="x64" target_cpu="x64" is_debug=true symbol_level=2 is_clang=true is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_safe_libstdcxx=true use_custom_libcxx=false v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=true v8_enable_verify_heap=true v8_enable_object_print=true'
-                ninja -C out/x64.debug v8_monolith v8_hello_world
+                gn gen out/x64.debug --args='v8_target_cpu="x64" target_cpu="x64" is_debug=true symbol_level=2 is_clang=true is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=true v8_enable_verify_heap=true v8_enable_object_print=true'
+                ninja -C out/x64.debug -j 3 v8_monolith v8_hello_world
 
           - name: Build V8 Linux x64 Release
             shell: bash
             run: |
                 cd v8/v8
-                gn gen out/x64.release --args='v8_target_cpu="x64" target_cpu="x64" is_debug=false symbol_level=0 is_clang=true is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_safe_libstdcxx=true use_custom_libcxx=false v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=false v8_enable_verify_heap="" v8_enable_object_print=""'
-                ninja -C out/x64.release v8_monolith v8_hello_world
+                gn gen out/x64.release --args='v8_target_cpu="x64" target_cpu="x64" is_debug=false symbol_level=0 is_clang=true is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=false v8_enable_verify_heap="" v8_enable_object_print=""'
+                ninja -C out/x64.release -j 3 v8_monolith v8_hello_world
 
           - name: Test Product
             shell: bash
@@ -119,7 +119,7 @@ jobs:
                 retention-days: 7
 
     arm64:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04-arm
         steps:
 
           - name: Checkout This Repo
@@ -160,12 +160,6 @@ jobs:
             run: |
                 cd v8/v8
                 gclient sync -D
-
-          - name: Install Sysroot
-            shell: bash
-            run: |
-                cd v8/v8
-                python3 build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
 
           - name: Build V8 Linux arm64 Debug
             shell: bash
