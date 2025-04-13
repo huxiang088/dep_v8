@@ -165,7 +165,7 @@ jobs:
             shell: bash
             run: |
                 cd v8/v8
-                apt install pkg-config
+                sudo apt install pkg-config
                 python3 build/linux/sysroot_scripts/install-sysroot.py --arch=arm64
 
           - name: Build V8 Linux arm64 Debug
