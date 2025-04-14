@@ -39,6 +39,8 @@ jobs:
                 sudo apt autoremove -y
                 sudo apt update
                 sudo apt install g++-14 gcc-14
+                sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
+                sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
                 df -h
 
           - name: Set Global Git Configs
@@ -149,6 +151,8 @@ jobs:
                 sudo apt autoremove -y
                 sudo apt update
                 sudo apt install g++-14 gcc-14
+                sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
+                sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
                 df -h
 
           - name: Set Global Git Configs
