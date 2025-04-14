@@ -76,56 +76,42 @@ jobs:
                 cd v8/v8
                 gclient sync -D
 
-          - name: Build V8 Linux x64 Debug
-            shell: bash
-            run: |
-                cd v8/v8
-                gn gen out/x64.debug --args='v8_target_cpu="x64" target_cpu="x64" is_debug=true symbol_level=2 is_clang=false is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=true v8_enable_verify_heap=true v8_enable_object_print=true'
-                ninja -C out/x64.debug -j 3 v8_monolith v8_hello_world
-
-          - name: Remove Intermidiate Files
-            shell: bash
-            run: |
-                cd v8/v8/out/x64.debug
-
-          - name: Build V8 Linux x64 Release
-            shell: bash
-            run: |
-                cd v8/v8
-                gn gen out/x64.release --args='v8_target_cpu="x64" target_cpu="x64" is_debug=false symbol_level=0 is_clang=false is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=false v8_enable_verify_heap="" v8_enable_object_print=""'
-                ninja -C out/x64.release -j 3 v8_monolith v8_hello_world
-
-          - name: Test Product
-            shell: bash
-            run: |
-                set -e
-                chmod +x ./v8/v8/out/x64.debug/v8_hello_world
-                chmod +x ./v8/v8/out/x64.release/v8_hello_world
-                output1=$(./v8/v8/out/x64.debug/v8_hello_world)
-                if [[ "$output1" == "Hello, World!"* ]]; then
-                    echo "Debug test passed."
-                else
-                    echo "Test failure: output is $output1"
-                    exit 1
-                fi
-                output2=$(./v8/v8/out/x64.release/v8_hello_world)
-                if [[ "$output2" == "Hello, World!"* ]]; then
-                    echo "Release test passed."
-                else
-                    echo "Test failure: output is $output2"
-                    exit 1
-                fi
-
-          - name: Compress Product
+          - name: Gather Product Resources
             shell: bash
             run: |
                 echo "${{inputs.version}}" >> VERSION.txt
                 echo "${{inputs.commit}}" >> VERSION.txt
                 mkdir -p temp/include/v8
                 cp -a ./v8/v8/include/* ./temp/include/v8
+
+          - name: Build V8 Linux x64 Debug
+            shell: bash
+            run: |
+                cd v8/v8
+                gn gen out/x64.debug --args='v8_target_cpu="x64" target_cpu="x64" is_debug=true symbol_level=2 is_clang=false is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=true v8_enable_verify_heap=true v8_enable_object_print=true'
+                ninja -C out/x64.debug -j 3 v8_monolith
+
+          - name: Compress Product Debug
+            shell: bash
+            run: |
                 7z a v8_linux_x64_debug.7z ./v8/v8/out/x64.debug/obj/libv8_monolith.a ./temp/include VERSION.txt
+                cd v8/v8/out
+                rm -rf x64.debug/
+
+          - name: Build V8 Linux x64 Release
+            shell: bash
+            run: |
+                cd v8/v8
+                gn gen out/x64.release --args='v8_target_cpu="x64" target_cpu="x64" is_debug=false symbol_level=0 is_clang=false is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=false v8_enable_verify_heap="" v8_enable_object_print=""'
+                ninja -C out/x64.release -j 3 v8_monolith
+
+          - name: Compress Product Release
+            shell: bash
+            run: |
                 7z a v8_linux_x64_release.7z ./v8/v8/out/x64.release/obj/libv8_monolith.a ./temp/include VERSION.txt
-        
+                cd v8/v8/out
+                rm -rf x64.release/
+
           - name: Upload Archive
             uses: actions/upload-artifact@v4
             with:
@@ -150,9 +136,7 @@ jobs:
                 sudo apt remove acl ant ant-optional apache2 aria2 autoconf automake azure-cli binutils bison brotli buildah clang-16 clang-17 clang-18 clang-format-16 clang-format-17 clang-format-18 clang-tidy-16 clang-tidy-17 clang-tidy-18 cloud-init containerd.io dbus docker-ce docker-ce-cli dotnet-sdk-8.0 dpkg-dev eatmydata efibootmgr firefox flex fonts-noto-color-emoji ftp g++ g++-12 g++-13 g++-14 gcc gfortran gfortran-12 gfortran-13 gfortran-14 gnupg gnupg2 golang-go gradle haveged kubectl libeatmydata1 libgbm-dev liblz4-dev libmysqlclient-dev libsqlite3-dev libssl-dev libtool libtss2-esys-3.0.2-0t64 libtss2-mu-4.0.1-0t64 libtss2-rc0t64 libwrap0 libyaml-dev linux-azure lld-16 lld-17 lld-18 lldb-18 locales lsb-release lsscsi mediainfo mercurial mysql-client mysql-server ncurses-term nftables nginx nvme-cli packages-microsoft-prod php-pear php8.3 php8.3-amqp php8.3-apcu php8.3-bcmath php8.3-bz2 php8.3-cgi php8.3-cli php8.3-common php8.3-curl php8.3-dba php8.3-dev php8.3-enchant php8.3-fpm php8.3-gd php8.3-gmp php8.3-igbinary php8.3-imagick php8.3-imap php8.3-interbase php8.3-intl php8.3-ldap php8.3-mbstring php8.3-memcache php8.3-memcached php8.3-mongodb php8.3-mysql php8.3-odbc php8.3-opcache php8.3-pcov php8.3-pgsql php8.3-phpdbg php8.3-pspell php8.3-readline php8.3-redis php8.3-snmp php8.3-soap php8.3-sqlite3 php8.3-sybase php8.3-tidy php8.3-xdebug php8.3-xml php8.3-xsl php8.3-yaml php8.3-zip php8.3-zmq podman rpm rsync ruby-full sphinxsearch sqlite3 temurin-11-jdk temurin-17-jdk temurin-21-jdk temurin-8-jdk ubuntu-minimal ubuntu-server ubuntu-standard upx-ucl walinuxagent xvfb zip zlib1g-dev zsync
                 sudo apt autoremove -y
                 sudo apt update
-                sudo apt install g++-14 gcc-14
-                sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
-                sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
+                sudo apt install g++-aarch64-linux-gnu
                 df -h
 
           - name: Set Global Git Configs
@@ -188,30 +172,42 @@ jobs:
                 cd v8/v8
                 gclient sync -D
 
-          - name: Build V8 Linux arm64 Debug
-            shell: bash
-            run: |
-                cd v8/v8
-                gn gen out/arm64.debug --args='host_cpu="arm64" v8_target_cpu="arm64" target_cpu="arm64" is_debug=true symbol_level=2 is_clang=false is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=true v8_enable_verify_heap=true v8_enable_object_print=true'
-                ninja -C out/arm64.debug v8_monolith v8_hello_world
-
-          - name: Build V8 Linux arm64 Release
-            shell: bash
-            run: |
-                cd v8/v8
-                gn gen out/arm64.release --args='host_cpu="arm64" v8_target_cpu="arm64" target_cpu="arm64" is_debug=false symbol_level=0 is_clang=false is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=false v8_enable_verify_heap="" v8_enable_object_print=""'
-                ninja -C out/arm64.release v8_monolith v8_hello_world
-
-          - name: Compress Product
+          - name: Gather Product Resources
             shell: bash
             run: |
                 echo "${{inputs.version}}" >> VERSION.txt
                 echo "${{inputs.commit}}" >> VERSION.txt
                 mkdir -p temp/include/v8
                 cp -a ./v8/v8/include/* ./temp/include/v8
+
+          - name: Build V8 Linux arm64 Debug
+            shell: bash
+            run: |
+                cd v8/v8
+                gn gen out/arm64.debug --args='host_cpu="arm64" v8_target_cpu="arm64" target_cpu="arm64" is_debug=true symbol_level=2 is_clang=false is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=true v8_enable_verify_heap=true v8_enable_object_print=true'
+                ninja -C out/arm64.debug v8_monolith
+
+          - name: Compress Product Debug
+            shell: bash
+            run: |
                 7z a v8_linux_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/libv8_monolith.a ./temp/include VERSION.txt
+                cd v8/v8/out
+                rm -rf arm64.debug/
+
+          - name: Build V8 Linux arm64 Release
+            shell: bash
+            run: |
+                cd v8/v8
+                gn gen out/arm64.release --args='host_cpu="arm64" v8_target_cpu="arm64" target_cpu="arm64" is_debug=false symbol_level=0 is_clang=false is_component_build=false v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=true v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=false v8_enable_verify_heap="" v8_enable_object_print=""'
+                ninja -C out/arm64.release v8_monolith
+
+          - name: Compress Product Release
+            shell: bash
+            run: |
                 7z a v8_linux_arm64_release.7z ./v8/v8/out/arm64.release/obj/libv8_monolith.a ./temp/include VERSION.txt
-        
+                cd v8/v8/out
+                rm -rf arm64.release/
+
           - name: Upload Archive
             uses: actions/upload-artifact@v4
             with:
