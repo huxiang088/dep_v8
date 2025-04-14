@@ -36,7 +36,7 @@ jobs:
             shell: bash
             run: |
                 df -h
-                
+                sudo apt list --installed
                 sudo apt remove cmake
                 sudo apt-get autoremove -y
                 df -h
