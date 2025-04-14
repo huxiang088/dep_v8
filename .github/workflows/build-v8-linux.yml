@@ -36,7 +36,7 @@ jobs:
             shell: bash
             run: |
                 df -h
-                sudo apt remove acl aria2 autoconf automake binutils bison brotli bzip2 coreutils dbus dnsutils dpkg dpkg-dev fakeroot findutils flex fonts-noto-color emoji ftp haveged iproute2 iputils-ping libsqlite3-dev libssl-dev libyaml-dev locales make mediainfo mercurial net-tools netcat openssh-client pollinate rpm rsync sqlite3 ssh sshpass swig tar telnet texinfo tzdata upx xvfb xz-utils zsync apache2 nginx rust aws-cli azure-cli google-cloud-sdk dotnet-sdk-3.1 nodejs npm ruby ruby-dev 
+                sudo apt remove acl aria2 autoconf automake binutils bison brotli bzip2 coreutils dbus dnsutils dpkg dpkg-dev fakeroot findutils flex ftp haveged iproute2 iputils-ping libsqlite3-dev libssl-dev libyaml-dev locales make mediainfo mercurial net-tools netcat openssh-client pollinate rpm rsync sqlite3 ssh sshpass swig tar telnet texinfo tzdata upx xvfb xz-utils zsync apache2 nginx rustc azure-cli nodejs npm ruby ruby-dev 
                 sudo apt-get autoremove -y
                 df -h
 
