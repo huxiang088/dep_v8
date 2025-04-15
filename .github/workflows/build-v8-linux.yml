@@ -41,6 +41,11 @@ jobs:
                 sudo apt install g++-14
                 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
                 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
+                sudo apt-get clean
+                sudo rm -rf /var/lib/apt/lists/*
+                sudo rm -rf /tmp/*
+                sudo journalctl --vacuum-time=1s
+                du -sh /var/log/*
                 sudo apt list --installed
                 sudo apt-mark showmanual
                 df -h
