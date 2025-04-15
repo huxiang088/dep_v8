@@ -49,22 +49,20 @@ jobs:
                 sudo rm -rf /usr/local/julia1.11.4
                 sudo rm -rf /usr/local/gradle-8.13
                 sudo rm -rf /usr/local/miniconda
+                sudo rm -rf /usr/local/n
                 sudo rm -rf /usr/local/swift
-                cd /usr/local
-                ls
-                echo "-----------------------------"
-                sudo du -sh *
-                echo "-----------------------------"
-                sudo rm -rf /usr/share/gradle-8.13
-                sudo rm -rf /usr/share/miniconda
-                sudo rm -rf /usr/share/swift
                 sudo rm -rf /usr/share/doc
-                sudo rm -rf /usr/share/man
+                sudo rm -rf /usr/share/gradle-8.13
+                sudo rm -rf /usr/share/java
                 sudo rm -rf /usr/share/locale
-                cd /usr/share
-                ls
-                echo "-----------------------------"
+                sudo rm -rf /usr/share/man
+                sudo rm -rf /usr/share/miniconda
+                sudo rm -rf /usr/share/perl
+                sudo rm -rf /usr/share/swift
+                cd /usr
                 sudo du -sh *
+                cd ..
+                echo "-----------------------------"
                 df -h
                 sudo apt list --installed
                 sudo apt-mark showmanual
