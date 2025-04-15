@@ -63,12 +63,10 @@ jobs:
                 sudo rm -rf /usr/share/swift
                 sudo rm -rf /opt/hostedtoolcache
                 sudo rm -rf /opt/pipx
+                cd /usr
                 sudo du -sh *
                 echo "-----------------------------"
                 df -h
-                sudo apt list --installed
-                sudo apt-mark showmanual
-                sudo du -sh /*
 
           - name: Set Global Git Configs
             shell: bash
