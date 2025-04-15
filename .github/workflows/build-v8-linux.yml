@@ -42,8 +42,9 @@ jobs:
                 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
                 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
                 sudo apt clean
+                sudo rm -rf /opt/hostedtoolcache
+                sudo rm -rf /opt/pipx
                 sudo rm -rf /tmp/*
-                sudo rm -rf /var/*
                 sudo rm -rf /usr/local/aws-cli
                 sudo rm -rf /usr/local/aws-sam-cli
                 sudo rm -rf /usr/local/julia1.11.4
@@ -63,11 +64,7 @@ jobs:
                 sudo rm -rf /usr/share/miniconda
                 sudo rm -rf /usr/share/perl
                 sudo rm -rf /usr/share/swift
-                sudo rm -rf /opt/hostedtoolcache
-                sudo rm -rf /opt/pipx
-                sudo du -sh *
-                echo "-----------------------------"
-                df -h
+                sudo rm -rf /var/*
 
           - name: Set Global Git Configs
             shell: bash
@@ -172,7 +169,6 @@ jobs:
                 sudo apt autoremove -y
                 sudo apt update
                 sudo apt install g++-aarch64-linux-gnu
-                df -h
 
           - name: Set Global Git Configs
             shell: bash
