@@ -59,9 +59,8 @@ jobs:
                 sudo rm -rf /usr/share/miniconda
                 sudo rm -rf /usr/share/perl
                 sudo rm -rf /usr/share/swift
-                cd /usr
+                cd /usr/local
                 sudo du -sh *
-                cd ..
                 echo "-----------------------------"
                 df -h
                 sudo apt list --installed
