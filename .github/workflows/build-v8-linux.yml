@@ -45,6 +45,11 @@ jobs:
                 sudo apt remove --purge -y language-pack-*
                 sudo rm -rf /tmp/*
                 sudo rm -rf /var/*
+                cd /usr
+                sudo du -sh /*
+                sudo rm -rf /usr/share/doc/*
+                sudo rm -rf /usr/share/man/*
+                sudo rm -rf /usr/share/locale/*
                 sudo journalctl --vacuum-time=1s
                 sudo apt list --installed
                 sudo apt-mark showmanual
