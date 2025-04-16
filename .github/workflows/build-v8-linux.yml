@@ -42,12 +42,32 @@ jobs:
                 sudo rm -rf /tmp/*
                 sudo rm -rf /usr/local/aws-cli
                 sudo rm -rf /usr/local/aws-sam-cli
+                sudo rm -rf /usr/local/bin/azcopy
+                sudo rm -rf /usr/local/bin/bicep
+                sudo rm -rf /usr/local/bin/cmake-gui
+                sudo rm -rf /usr/local/bin/helm
+                sudo rm -rf /usr/local/bin/minikube
+                sudo rm -rf /usr/local/bin/node
+                sudo rm -rf /usr/local/bin/packer
+                sudo rm -rf /usr/local/bin/pulumi
+                sudo rm -rf /usr/local/bin/pulumi-language-dotnet
+                sudo rm -rf /usr/local/bin/pulumi-language-go
+                sudo rm -rf /usr/local/bin/pulumi-language-java
+                sudo rm -rf /usr/local/bin/pulumi-language-nodejs
+                sudo rm -rf /usr/local/bin/pulumi-language-python
+                sudo rm -rf /usr/local/bin/pulumi-language-yaml
+                sudo rm -rf /usr/local/bin/stack
                 sudo rm -rf /usr/local/julia1.11.4
                 sudo rm -rf /usr/local/gradle-8.13
                 sudo rm -rf /usr/local/lib/android
                 sudo rm -rf /usr/local/lib/node_modules
                 sudo rm -rf /usr/local/miniconda
                 sudo rm -rf /usr/local/n
+                sudo rm -rf /usr/local/share/chromium
+                sudo rm -rf /usr/local/share/cmake-3.31
+                sudo rm -rf /usr/local/share/edge_driver
+                sudo rm -rf /usr/local/share/emacs
+                sudo rm -rf /usr/local/share/vcpkg
                 sudo rm -rf /usr/local/swift
                 sudo rm -rf /usr/local/android
                 sudo rm -rf /usr/local/node_modules
@@ -67,13 +87,8 @@ jobs:
                 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
                 sudo apt clean
                 sudo rm -rf /var/*
-                cd /usr/share
-                sudo du -sh *
                 echo "================="
-                cd /usr/local/bin
-                sudo du -sh *
-                echo "================="
-                cd /usr/local/share
+                cd /usr/local/share/powershell
                 sudo du -sh *
                 echo "================="
                 df -h
