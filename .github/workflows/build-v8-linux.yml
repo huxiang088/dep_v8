@@ -88,7 +88,7 @@ jobs:
                 sudo apt clean
                 sudo rm -rf /var/*
                 echo "================="
-                cd /usr/local/share/powershell
+                cd /usr/local/share/powershell/Modules
                 sudo du -sh *
                 echo "================="
                 df -h
