@@ -77,9 +77,6 @@ jobs:
                 sudo du -sh *
                 echo "================="
                 df -h
-                echo "================="
-                giygudryftygu
-                sudo du -sh /*
 
           - name: Set Global Git Configs
             shell: bash
