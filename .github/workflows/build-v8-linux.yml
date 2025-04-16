@@ -127,8 +127,11 @@ jobs:
                 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
                 sudo apt clean
                 sudo rm -rf /var/*
-                cd /usr/local
-                sudo du -sh *
+                cd /usr
+                sudo du -sh .[^.]* *
+                echo "================="
+                cd local
+                sudo du -sh .[^.]* *
                 echo "================="
                 df -h
                 echo "================="
