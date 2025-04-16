@@ -65,12 +65,15 @@ jobs:
                 sudo rm -rf /usr/share/perl
                 sudo rm -rf /usr/share/swift
                 sudo rm -rf /var/*
-                cd /mnt
+                cd /usr/lib
                 sudo du -sh *
-                cd ../usr
+                echo "================="
+                cd /usr/local
                 sudo du -sh *
-                cd ../opt
+                echo "================="
+                cd /usr/share
                 sudo du -sh *
+                echo "================="
                 sudo du -sh /*
 
           - name: Set Global Git Configs
