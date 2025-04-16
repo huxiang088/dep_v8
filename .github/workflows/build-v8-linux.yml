@@ -128,7 +128,7 @@ jobs:
                 sudo apt clean
                 sudo rm -rf /var/*
                 cd /usr/local
-                sudo du -ash *
+                du -ahd1 | sort -hr
                 echo "================="
                 df -h
                 echo "================="
