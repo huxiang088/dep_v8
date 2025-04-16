@@ -126,10 +126,12 @@ jobs:
                 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
                 sudo apt clean
                 sudo rm -rf /var/*
-                echo "================="
-                sudo du -sh /*
+                cd /etc
+                sudo du -sh *
                 echo "================="
                 df -h
+                echo "================="
+                sudo du -sh /*
 
           - name: Set Global Git Configs
             shell: bash
