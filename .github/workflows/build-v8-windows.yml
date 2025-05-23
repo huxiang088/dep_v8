@@ -16,9 +16,11 @@ on:
         inputs:
             version:
                 type: string
+                description: Target version of V8.
                 required: true
             commit:
                 type: string
+                description: Target commit of V8.
                 required: true
 
 jobs:
