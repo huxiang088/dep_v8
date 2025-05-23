@@ -141,8 +141,6 @@ jobs:
             run: |
                 cd v8/v8
                 gclient sync -D
-                cd third_party/simdutf
-                git submodule update --init --recursive .
 
           - name: Build V8 MacOS arm64 Debug
             shell: bash
