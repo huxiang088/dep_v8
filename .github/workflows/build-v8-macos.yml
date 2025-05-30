@@ -68,7 +68,7 @@ jobs:
                 cd v8/v8
                 gclient sync -D
 
-          - name: Set XCode version
+          - name: Set XCode Version
             uses: maxim-lobanov/setup-xcode@v1.6.0
             with:
                 xcode-version: latest-stable
@@ -148,7 +148,7 @@ jobs:
                 cd v8/v8
                 gclient sync -D
 
-          - name: Set XCode version
+          - name: Set XCode Version
             uses: maxim-lobanov/setup-xcode@v1.6.0
             with:
                 xcode-version: latest-stable
