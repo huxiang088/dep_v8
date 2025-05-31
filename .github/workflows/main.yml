@@ -102,7 +102,7 @@ jobs:
             id: commit
             run: |
                 git add CURRENT_COMMIT
-                git commit -m "Automated: Update Ccurrent commit to $LATEST_COMMIT"
+                git commit -m "Automated: Update Current commit to $LATEST_COMMIT"
 
                 commit=$(git rev-parse HEAD)
                 echo "commit=$commit" >> $GITHUB_OUTPUT
