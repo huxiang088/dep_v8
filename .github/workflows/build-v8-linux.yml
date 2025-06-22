@@ -38,6 +38,7 @@ jobs:
           - name: Remove Everything to Free Up Space
             shell: bash
             run: |
+                sudo apt update
                 sudo apt remove acl ant ant-optional apache2 aria2 autoconf automake azure-cli bison brotli buildah clang-16 clang-17 clang-18 clang-format-16 clang-format-17 clang-format-18 clang-tidy-16 clang-tidy-17 clang-tidy-18 cloud-init containerd.io dbus docker-ce docker-ce-cli dotnet-sdk-8.0 dpkg-dev eatmydata efibootmgr firefox flex fonts-noto-color-emoji ftp g++ g++-12 g++-13 g++-14 gcc gfortran gfortran-12 gfortran-13 gfortran-14 gnupg gnupg2 google-chrome-stable google-cloud-cli haveged kubectl libeatmydata1 liblz4-dev libmysqlclient-dev libsqlite3-dev libssl-dev libtool libtss2-esys-3.0.2-0t64 libtss2-mu-4.0.1-0t64 libtss2-rc0t64 libwrap0 libyaml-dev linux-azure linux-cloud-tools-6.8.0-1021-azure linux-headers-6.8.0-1021-azure lld-16 lld-17 lld-18 lldb-18 locales lsb-release lsscsi mediainfo mercurial microsoft-edge-stable mysql-client mysql-server ncurses-term nftables nginx nvme-cli p7zip-rar packages-microsoft-prod php-pear php8.3 php8.3-amqp php8.3-apcu php8.3-bcmath php8.3-bz2 php8.3-cgi php8.3-cli php8.3-common php8.3-curl php8.3-dba php8.3-dev php8.3-enchant php8.3-fpm php8.3-gd php8.3-gmp php8.3-igbinary php8.3-imagick php8.3-imap php8.3-interbase php8.3-intl php8.3-ldap php8.3-mbstring php8.3-memcache php8.3-memcached php8.3-mongodb php8.3-mysql php8.3-odbc php8.3-opcache php8.3-pcov php8.3-pgsql php8.3-phpdbg php8.3-pspell php8.3-readline php8.3-redis php8.3-snmp php8.3-soap php8.3-sqlite3 php8.3-sybase php8.3-tidy php8.3-xdebug php8.3-xml php8.3-xsl php8.3-yaml php8.3-zip php8.3-zmq podman postgresql-16 python-babel-localedata python-is-python3 python3-babel python3-jinja2 python3-json-pointer python3-jsonpatch python3-jsonschema python3-markupsafe python3-parted python3-pip python3-pyrsistent python3-serial python3-six python3-venv python3-tz rpm rsync ruby-full sphinxsearch sqlite3 temurin-11-jdk temurin-17-jdk temurin-21-jdk temurin-8-jdk ubuntu-minimal ubuntu-server ubuntu-standard upx-ucl walinuxagent xvfb zip zlib1g-dev zsync
                 sudo apt autoremove -y
                 sudo rm -rf /etc/skel
@@ -270,7 +271,7 @@ jobs:
             shell: bash
             run: |
                 cd v8/v8
-                gclient sync -D
+                gclient sync
 
           - name: Build V8 Linux arm64 Debug
             shell: bash
