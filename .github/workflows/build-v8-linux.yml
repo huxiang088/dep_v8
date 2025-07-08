@@ -41,9 +41,9 @@ jobs:
                 sudo apt update
                 sudo apt autoremove -y
                 sudo apt update
-                sudo apt install g++-11
-                sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
-                sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100
+                sudo apt install g++-11 gcc-11
+                sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 1000
+                sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 1000
                 sudo apt clean
                 df -h
 
