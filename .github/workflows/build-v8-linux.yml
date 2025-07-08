@@ -45,7 +45,6 @@ jobs:
                 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
                 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100
                 sudo apt clean
-                sudo rm -rf /var/*
                 df -h
 
           - name: Set Global Git Configs
