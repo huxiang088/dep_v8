@@ -87,7 +87,6 @@ jobs:
                 cd v8/v8
                 gn gen out/x64.debug --args='v8_target_cpu="x64" target_cpu="x64" is_debug=true symbol_level=2 is_clang=false is_component_build=true v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=false v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=true v8_enable_verify_heap=true v8_enable_object_print=true v8_enable_backtrace=true'
                 gn args out/x64.debug --list
-                fhesguer
                 ninja -C out/x64.debug -j 3 v8_monolith v8_hello_world
 
           - name: Build V8 Linux x64 Release
@@ -193,7 +192,6 @@ jobs:
                 cd v8/v8
                 gn gen out/arm64.debug --args='v8_target_cpu="arm64" target_cpu="arm64" is_debug=true symbol_level=2 is_clang=true is_component_build=true v8_static_library=true clang_use_chrome_plugins=false v8_enable_pointer_compression=true use_custom_libcxx=false use_custom_libcxx_for_host=false use_safe_libstdcxx=true v8_enable_partition_alloc=false v8_monolithic=false v8_use_external_startup_data=false v8_enable_sandbox=true v8_enable_webassembly=true treat_warnings_as_errors=false enable_iterator_debugging=true v8_enable_verify_heap=true v8_enable_object_print=true v8_enable_backtrace=true'
                 gn args out/arm64.debug --list
-                fhesguer
                 sed -i '4 s/$/ -flax-vector-conversions/' out/arm64.debug/obj/v8_base_without_compiler.ninja
                 ninja -C out/arm64.debug -j 3 v8_monolith
                 
