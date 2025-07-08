@@ -124,8 +124,8 @@ jobs:
                 echo "${{inputs.commit}}" >> VERSION.txt
                 mkdir -p temp/include
                 cp -a ./v8/v8/include/* ./temp/include
-                7z a v8_linux_x64_debug.7z ./v8/v8/out/x64.debug/obj/libv8_monolith.a ./temp/include VERSION.txt
-                7z a v8_linux_x64_release.7z ./v8/v8/out/x64.release/obj/libv8_monolith.a ./temp/include VERSION.txt
+                7z a v8_linux_x64_debug.7z ./v8/v8/out/x64.debug/obj/libv8* ./temp/include VERSION.txt
+                7z a v8_linux_x64_release.7z ./v8/v8/out/x64.release/obj/libv8* ./temp/include VERSION.txt
 
           - name: Upload Archive
             uses: actions/upload-artifact@v4
@@ -209,8 +209,8 @@ jobs:
                 echo "${{inputs.commit}}" >> VERSION.txt
                 mkdir -p temp/include
                 cp -a ./v8/v8/include/* ./temp/include
-                7z a v8_linux_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/libv8_monolith.a ./temp/include VERSION.txt
-                7z a v8_linux_arm64_release.7z ./v8/v8/out/arm64.release/obj/libv8_monolith.a ./temp/include VERSION.txt
+                7z a v8_linux_arm64_debug.7z ./v8/v8/out/arm64.debug/obj/libv8* ./temp/include VERSION.txt
+                7z a v8_linux_arm64_release.7z ./v8/v8/out/arm64.release/obj/libv8* ./temp/include VERSION.txt
 
           - name: Upload Archive
             uses: actions/upload-artifact@v4
